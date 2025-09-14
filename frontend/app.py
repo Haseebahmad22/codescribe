@@ -75,7 +75,8 @@ def main():
         # API Provider Selection
         provider = st.selectbox(
             "AI Provider",
-            ["openai", "huggingface"],
+            ["openai", "deepseek", "huggingface"],
+            index=1,  # Default to deepseek
             help="Choose the AI provider for documentation generation"
         )
         
@@ -97,6 +98,25 @@ def main():
             
             if api_key:
                 os.environ["OPENAI_API_KEY"] = api_key
+        
+        elif provider == "deepseek":
+            model = st.selectbox(
+                "Model",
+                ["deepseek-r1", "deepseek-chat"],
+                help="Select the DeepSeek model to use"
+            )
+            
+            # API Key Input
+            api_key = st.text_input(
+                "DeepSeek API Key",
+                type="password",
+                value=os.getenv("DEEPSEEK_API_KEY", ""),
+                help="Your DeepSeek API key"
+            )
+            
+            if api_key:
+                os.environ["DEEPSEEK_API_KEY"] = api_key
+        
         else:
             model = st.selectbox(
                 "Model",

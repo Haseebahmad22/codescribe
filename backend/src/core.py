@@ -7,10 +7,10 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 import yaml
 
-from .parsers import ParserFactory
-from .generators import GeneratorFactory, DocumentationConfig
-from .parsers.base import CodeElement
-from .generators.base import GeneratedDocumentation
+from parsers import ParserFactory
+from generators import GeneratorFactory, DocumentationConfig
+from parsers.base import CodeElement
+from generators.base import GeneratedDocumentation
 
 
 class CodeScribeEngine:
@@ -25,10 +25,17 @@ class CodeScribeEngine:
         """Load configuration from file or use defaults"""
         default_config = {
             'ai': {
-                'provider': 'openai',
+                'provider': os.getenv('DEFAULT_AI_PROVIDER', 'openai'),
                 'openai': {
                     'api_key': os.getenv('OPENAI_API_KEY', ''),
-                    'model': 'gpt-3.5-turbo',
+                    'model': os.getenv('DEFAULT_MODEL', 'gpt-3.5-turbo'),
+                    'max_tokens': 1000,
+                    'temperature': 0.3
+                },
+                'deepseek': {
+                    'api_key': os.getenv('DEEPSEEK_API_KEY', ''),
+                    'model': os.getenv('DEFAULT_MODEL', 'deepseek-r1'),
+                    'base_url': os.getenv('DEEPSEEK_BASE_URL', 'https://api.deepseek.com'),
                     'max_tokens': 1000,
                     'temperature': 0.3
                 }
@@ -63,6 +70,14 @@ class CodeScribeEngine:
     
     def _initialize_generator(self):
         """Initialize the documentation generator"""
+        provider = self.config['ai']['provider']
+        
+        # Determine which config section to use for tokens and temperature
+        if provider == 'deepseek':
+            ai_config = self.config['ai']['deepseek']
+        else:
+            ai_config = self.config['ai'].get(provider, self.config['ai']['openai'])
+        
         doc_config = DocumentationConfig(
             style=self.config['documentation'].get('style', 'google'),
             verbosity=self.config['documentation']['verbosity'],
@@ -70,11 +85,9 @@ class CodeScribeEngine:
             include_parameters=self.config['documentation']['include_parameters'],
             include_return_values=self.config['documentation']['include_return_values'],
             include_exceptions=self.config['documentation']['include_exceptions'],
-            max_tokens=self.config['ai']['openai']['max_tokens'],
-            temperature=self.config['ai']['openai']['temperature']
+            max_tokens=ai_config.get('max_tokens', 1000),
+            temperature=ai_config.get('temperature', 0.3)
         )
-        
-        provider = self.config['ai']['provider']
         
         try:
             if provider == 'openai':
@@ -82,6 +95,13 @@ class CodeScribeEngine:
                 model = self.config['ai']['openai']['model']
                 self.doc_generator = GeneratorFactory.create_generator(
                     provider, doc_config, api_key=api_key, model=model
+                )
+            elif provider == 'deepseek':
+                api_key = self.config['ai']['deepseek']['api_key']
+                model = self.config['ai']['deepseek']['model']
+                base_url = self.config['ai']['deepseek']['base_url']
+                self.doc_generator = GeneratorFactory.create_generator(
+                    provider, doc_config, api_key=api_key, model=model, base_url=base_url
                 )
             elif provider == 'huggingface':
                 model = self.config['ai'].get('huggingface', {}).get('model', 'microsoft/DialoGPT-medium')

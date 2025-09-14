@@ -6,6 +6,7 @@ from typing import Optional, Dict, Any
 from .base import BaseDocumentationGenerator, DocumentationConfig
 from .openai_generator import OpenAIDocumentationGenerator
 from .huggingface_generator import HuggingFaceDocumentationGenerator
+from .deepseek_generator import DeepSeekDocumentationGenerator
 
 
 class GeneratorFactory:
@@ -28,6 +29,16 @@ class GeneratorFactory:
             
             return OpenAIDocumentationGenerator(config, api_key, model)
         
+        elif provider.lower() == "deepseek":
+            api_key = kwargs.get("api_key")
+            model = kwargs.get("model", "deepseek-r1")
+            base_url = kwargs.get("base_url", "https://api.deepseek.com")
+            
+            if not api_key:
+                raise ValueError("DeepSeek API key is required")
+            
+            return DeepSeekDocumentationGenerator(config, api_key, model, base_url)
+        
         elif provider.lower() == "huggingface":
             model_name = kwargs.get("model", "microsoft/DialoGPT-medium")
             return HuggingFaceDocumentationGenerator(config, model_name)
@@ -45,6 +56,13 @@ class GeneratorFactory:
                 "requires_api_key": True,
                 "models": ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview"],
                 "cost": "API usage based"
+            },
+            "deepseek": {
+                "name": "DeepSeek R1",
+                "description": "Cost-effective high-quality documentation using DeepSeek R1",
+                "requires_api_key": True,
+                "models": ["deepseek-r1", "deepseek-chat"],
+                "cost": "Very low cost API usage"
             },
             "huggingface": {
                 "name": "Hugging Face Transformers",
