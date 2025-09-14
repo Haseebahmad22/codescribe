@@ -1,0 +1,70 @@
+# CodeScribe Configuration Template
+# Copy this file to config.yaml and fill in your settings
+
+# AI Provider Configuration
+ai:
+  provider: "openai"  # Options: "openai", "huggingface"
+  
+  # OpenAI Configuration
+  openai:
+    api_key: ""  # Your OpenAI API key
+    model: "gpt-3.5-turbo"  # or "gpt-4"
+    max_tokens: 1000
+    temperature: 0.3
+  
+  # Hugging Face Configuration (alternative)
+  huggingface:
+    model: "microsoft/DialoGPT-medium"
+    cache_dir: "./models"
+
+# Documentation Generation Settings
+documentation:
+  default_language: "python"
+  output_format: "markdown"  # Options: "markdown", "html", "inline"
+  verbosity: "medium"  # Options: "low", "medium", "high"
+  
+  # Include sections
+  include_examples: true
+  include_parameters: true
+  include_return_values: true
+  include_exceptions: true
+
+# Language-specific Settings
+languages:
+  python:
+    style: "google"  # Options: "google", "numpy", "sphinx"
+    max_line_length: 88
+  
+  javascript:
+    style: "jsdoc"
+    max_line_length: 100
+
+# Processing Settings
+processing:
+  batch_size: 10
+  max_file_size_mb: 5
+  skip_files:
+    - "*.pyc"
+    - "*.min.js"
+    - "node_modules/*"
+    - "__pycache__/*"
+  
+  supported_extensions:
+    - ".py"
+    - ".js"
+    - ".ts"
+    - ".jsx"
+    - ".tsx"
+
+# API Settings
+api:
+  host: "localhost"
+  port: 8000
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8501"
+
+# Logging
+logging:
+  level: "INFO"  # Options: "DEBUG", "INFO", "WARNING", "ERROR"
+  file: "logs/codescribe.log"

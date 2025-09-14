@@ -1,0 +1,35 @@
+# Docker configuration for CodeScribe
+
+version: '3.8'
+
+services:
+  codescribe-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CODESCRIBE_API_HOST=0.0.0.0
+      - CODESCRIBE_API_PORT=8000
+    volumes:
+      - ./backend/logs:/app/logs
+      - ./backend/config:/app/config
+    restart: unless-stopped
+    
+  codescribe-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      - CODESCRIBE_API_URL=http://codescribe-api:8000
+    depends_on:
+      - codescribe-api
+    restart: unless-stopped
+
+volumes:
+  logs:
+  config:
