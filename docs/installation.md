@@ -4,9 +4,9 @@ This guide will help you set up CodeScribe - the AI-Powered Code Documentation A
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - Git (for cloning the repository)
-- OpenAI API key (for AI-powered documentation) or Hugging Face Transformers for local models
+- DeepSeek or OpenAI API key (AI provider) or Hugging Face for local models
 
 ## Installation Methods
 
@@ -35,10 +35,11 @@ This guide will help you set up CodeScribe - the AI-Powered Code Documentation A
    pip install -r requirements.txt
    ```
 
-3. **Set up the frontend:**
+3. **Set up the frontend (React):**
    ```bash
-   cd ../frontend
-   pip install -r requirements.txt
+   cd ../web
+   npm install
+   npm run dev
    ```
 
 4. **Configure the application:**
@@ -151,15 +152,15 @@ python cli/main.py --help
 
 ### Test the Frontend
 
-1. **Start the Streamlit app:**
+1. **Start the React dev server:**
    ```bash
-   cd frontend
-   streamlit run app.py
+   cd web
+   npm run dev
    ```
 
 2. **Open your browser to:**
    ```
-   http://localhost:8501
+   http://localhost:3000
    ```
 
 ## Troubleshooting
@@ -231,7 +232,7 @@ cd backend && pip install -r requirements.txt
 cd ../frontend && pip install -r requirements.txt
 ```
 
-For Docker:
+For Docker (API only by default):
 ```bash
 docker-compose down
 git pull origin main

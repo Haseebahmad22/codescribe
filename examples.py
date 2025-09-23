@@ -170,11 +170,11 @@ def example_frontend_usage():
     print("=== Frontend Usage Examples ===")
     
     examples = [
-        "# Start the Streamlit frontend",
-        "cd frontend && streamlit run app.py",
+        "# Start the React frontend",
+        "cd web && npm run dev",
         "",
         "# The web interface will be available at:",
-        "# http://localhost:8501",
+        "# http://localhost:3000",
         "",
         "Features available in the web interface:",
         "- Code Input: Paste code directly for documentation",

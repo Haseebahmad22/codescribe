@@ -17,18 +17,7 @@ services:
       - ./backend/logs:/app/logs
       - ./backend/config:/app/config
     restart: unless-stopped
-    
-  codescribe-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "8501:8501"
-    environment:
-      - CODESCRIBE_API_URL=http://codescribe-api:8000
-    depends_on:
-      - codescribe-api
-    restart: unless-stopped
+  # React frontend is under ./web; add a separate service if you want to containerize it.
 
 volumes:
   logs:

@@ -24,7 +24,7 @@ codescribe/
 │   │   └── cli/           # Command-line interface
 │   ├── config/            # Configuration files
 │   └── tests/             # Test suite
-├── frontend/              # Web interface
+├── web/                   # React (Vite+TS) frontend
 └── docs/                  # Documentation
 ```
 
@@ -48,21 +48,26 @@ codescribe/
    # Edit config.yaml with your OpenAI API key
    ```
 
-### Frontend Setup
+### Frontend Setup (React)
 
-1. Navigate to the frontend directory:
+1. Navigate to the web directory:
    ```bash
-   cd frontend
+   cd web
    ```
 
-2. Install dependencies (for React frontend):
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-   Or for Streamlit:
+3. Optional: set API base URL (defaults to http://localhost:8000):
    ```bash
-   pip install streamlit
+   echo VITE_API_BASE_URL=http://localhost:8000 > .env
+   ```
+
+4. Start the dev server:
+   ```bash
+   npm run dev
    ```
 
 ## 🖥️ Usage
@@ -77,24 +82,24 @@ python backend/src/cli/main.py --path ./my_project --language python --output md
 
 ### Web Interface
 
-Start the web application:
+Start the API server and the React dev server:
 
 ```bash
-# For Streamlit
-streamlit run frontend/app.py
+# API
+cd backend
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
 
-# For Flask/FastAPI
-python backend/src/api/main.py
+# Frontend
+cd ../web
+npm run dev
 ```
 
-Then open your browser to `http://localhost:8501` (Streamlit) or `http://localhost:8000` (FastAPI).
+Then open your browser to `http://localhost:3000` (React) and ensure the API is at `http://localhost:8000`.
 
 ## 📖 Documentation
 
 - [Installation Guide](docs/installation.md)
-- [CLI Reference](docs/cli-reference.md)
-- [API Documentation](docs/api-reference.md)
-- [Configuration Guide](docs/configuration.md)
+- API docs: once running, visit `http://localhost:8000/docs`
 
 ## 🤝 Contributing
 

@@ -1,2 +1,0 @@
-# Frontend Requirements
-# Deprecated: Streamlit frontend removed. Use React app in /web.

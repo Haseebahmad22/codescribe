@@ -21,12 +21,11 @@ setup(
         "Topic :: Software Development :: Documentation",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     install_requires=[
         "fastapi>=0.104.0",
         "uvicorn[standard]>=0.24.0",
@@ -41,7 +40,6 @@ setup(
         "pyyaml>=6.0.1",
         "python-dotenv>=1.0.0",
         "aiofiles>=23.2.1",
-        "streamlit>=1.28.0",
         "requests>=2.31.0",
     ],
     extras_require={
