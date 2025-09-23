@@ -9,7 +9,9 @@ import zipfile
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import json
-
+"""
+This file has been removed. The frontend has migrated to React (Vite+TS) under `web/`.
+"""
 
 # Configure Streamlit page
 st.set_page_config(

@@ -64,7 +64,11 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8501"],  # React and Streamlit
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8501",
+    ],  # React (Vite) and Streamlit
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -337,6 +341,13 @@ def _create_engine_from_request(request: DocumentationRequest) -> CodeScribeEngi
             'openai': {
                 'api_key': os.getenv('OPENAI_API_KEY', ''),
                 'model': request.model or 'gpt-3.5-turbo',
+                'max_tokens': 1000,
+                'temperature': 0.3
+            },
+            'deepseek': {
+                'api_key': os.getenv('DEEPSEEK_API_KEY', ''),
+                'model': request.model or 'deepseek-r1',
+                'base_url': os.getenv('DEEPSEEK_BASE_URL', 'https://api.deepseek.com'),
                 'max_tokens': 1000,
                 'temperature': 0.3
             }
